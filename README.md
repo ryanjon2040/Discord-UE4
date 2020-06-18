@@ -8,6 +8,15 @@ Plugin for integrating Discord Rich Presence in Unreal Engine 4.
 
 ![Rich Presence Result](Result.png)
 
+# How to
+First you will need to download the binaries from Discord. Head over to [Discord Developer Portal](https://discord.com/developers/docs/game-sdk/sdk-starter-guide) and download **Discord Game SDK**.
+
+![SDK_Download](Documentation/DownloadSDK.png)
+
+After downloading, open the zip file and extract the `.dll` and `.lib` files from the `lib/x86_64` folder to `Binaries/Win64/` folder of this plugin. If you don't have `Binaries/Win64` folder, create it. Example of my setup:
+
+![Extracted Example](Documentation/ExtractedExample.png)
+
 It is important to setup your game according to [Discord Startup Guide](https://discord.com/developers/docs/game-sdk/sdk-starter-guide). 
 
 Example Setup:
