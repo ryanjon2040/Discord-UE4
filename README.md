@@ -17,6 +17,10 @@ After downloading, open the zip file and extract the `.dll` and `.lib` files fro
 
 ![Extracted Example](Documentation/ExtractedExample.png)
 
+After copying the binary files, open the `cpp` folder inside the zip file and extract all the contents to `Source/DiscordUE4/discord-files` folder. If the `discord-files` folder doesn't exist, create it.
+
+Now you are good to go.
+
 It is important to setup your game according to [Discord Startup Guide](https://discord.com/developers/docs/game-sdk/sdk-starter-guide). 
 
 Example Setup:
