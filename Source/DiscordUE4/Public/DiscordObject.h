@@ -56,8 +56,7 @@ enum class EDiscordReturnResult : uint8
 	TransactionAborted = 43,
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStateSet, EDiscordReturnResult, StateSetResult);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDetailsSet, EDiscordReturnResult, DetailsSetResult);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDiscordResult, EDiscordReturnResult, StateSetResult);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class DISCORDUE4_API UDiscordObject : public UObject, public FTickableGameObject
@@ -68,15 +67,27 @@ private:
 
 	static UDiscordObject* DiscordObjectInstance;
 
+	uint8 bCanTick : 1;
+	uint8 bTimerStarted : 1;
+
 public:
 
-	void BeginDestroy() override;
+	UDiscordObject();
 
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
-	FOnStateSet OnStateSet;
+	FOnDiscordResult OnStateSet;
 
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
-	FOnStateSet OnDetailsSet;
+	FOnDiscordResult OnDetailsSet;
+
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordResult OnLargeImageSet;
+
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordResult OnTimerStart;
+
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordResult OnTimerEnd;
 
 	/**
 	* public static UDiscordObject::GetOrCreateDiscordObject
@@ -84,10 +95,27 @@ public:
 	* @See Make sure you setup your app as per this documentation https://discord.com/developers/docs/game-sdk/sdk-starter-guide
 	* @param InClientID [FString] The client ID of your application after creating it in https://discord.com/developers/
 	* @param bRequireDiscordRunning [const bool] If false, the game will close, Discord will re-open, and will try and relaunch your game. IMPORTANT NOTE: Editor will crash if this is true and discord is NOT running.
+	* @param bStartElapsedTimer [const bool] If true, rich presence will show elapsed time. You can manually start time stamps by calling Start/Stop Discord Timer.
 	* @returns [UDiscordObject*] Discord object instance.
 	**/
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static UDiscordObject* GetOrCreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning = false);
+	static UDiscordObject* GetOrCreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning = false, const bool bStartElapsedTimer = true);
+
+	/**
+	* public static UDiscordObject::DestroyDiscordObject
+	* Destroys the static Discord Object Instance.
+	**/
+	UFUNCTION(BlueprintCallable, Category = "Discord")	
+	static void DestroyDiscordObject();
+
+	/**
+	* public static UDiscordObject::GetDiscordResultString
+	* Returns a string representation of given discord result. Can be used with Discord delegates. @See OnStateSet, OnDetailsSet etc.
+	* @param InDiscordResult [EDiscordReturnResult] Result to check for.
+	* @return [const FString] Human readable string representation of the given result.
+	**/
+	UFUNCTION(BlueprintPure, Category = "Discord")	
+	static const FString GetDiscordResultString(EDiscordReturnResult InDiscordResult);
 
 	/**
 	* public UDiscordObject::SetState
@@ -107,15 +135,32 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Discord")
 	void SetDetails(FString InNewDetails);
 
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetLargeImage(const FString InKeyName);
+
+	/**
+	* public UDiscordObject::StartDiscordTimer
+	* Starts elapsed timer in Rich Presence.
+	**/
+	UFUNCTION(BlueprintCallable, Category = "Discord")	
+	void StartDiscordTimer();
+
+	/**
+	* public UDiscordObject::StopDiscordTimer
+	* Stops elapsed timer in Rich Presence.
+	**/
+	UFUNCTION(BlueprintCallable, Category = "Discord")	
+	void StopDiscordTimer();
+
 private:
 
-	void Internal_CreateDiscordObject(const FString& InClientID, const bool bRequireDiscordRunning);
+	void Internal_CreateDiscordObject(const FString& InClientID, const bool bRequireDiscordRunning, const bool bStartElapsedTimer);
 
 public:
 
 	void Tick(float DeltaTime) override;
 
-	bool IsTickable() const override { return true; }
+	bool IsTickable() const override { return bCanTick; }
 	bool IsTickableInEditor() const override { return false; }
 	bool IsTickableWhenPaused() const override { return true; }
 	TStatId GetStatId() const override { return TStatId(); }
