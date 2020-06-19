@@ -1,6 +1,6 @@
 # Discord-UE4
 
-Plugin for integrating Discord Rich Presence in Unreal Engine 4.
+Plugin for integrating Discord Rich Presence in Unreal Engine 4. Blueprints only example project is [available here](https://github.com/ryanjon2040/Discord-UE4-Example-Project).
 
 [![Discord Link](https://img.shields.io/discord/685402622844600329?logo=discord&style=for-the-badge)](https://discord.gg/QnzVK5R) [![GitHub All Releases](https://img.shields.io/github/downloads/ryanjon2040/Discord-UE4/total?logo=github&style=for-the-badge)](https://github.com/ryanjon2040/Discord-UE4/releases) ![GitHub repo size](https://img.shields.io/github/repo-size/ryanjon2040/Discord-UE4?logo=github&style=for-the-badge) [![GitHub](https://img.shields.io/github/license/ryanjon2040/Discord-UE4?style=for-the-badge)](https://github.com/ryanjon2040/Discord-UE4/blob/master/LICENSE)
 
