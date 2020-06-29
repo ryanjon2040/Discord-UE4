@@ -161,7 +161,7 @@ public:
 	void Tick(float DeltaTime) override;
 
 	bool IsTickable() const override { return bCanTick; }
-	bool IsTickableInEditor() const override { return false; }
+	bool IsTickableInEditor() const override { return true; }
 	bool IsTickableWhenPaused() const override { return true; }
 	TStatId GetStatId() const override { return TStatId(); }
 	
