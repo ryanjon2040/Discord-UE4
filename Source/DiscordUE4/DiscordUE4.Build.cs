@@ -19,11 +19,22 @@ public class DiscordUE4 : ModuleRules
 			throw new BuildException("discord_game_sdk.dll.lib was not found. Check it exists here: " + DiscordLibFile);
 		}
 
+		if (File.Exists(DiscordDllFile) == false)
+		{
+			throw new BuildException("discord_game_sdk.dll was not found. Check it exists here: " + DiscordDllFile);
+		}
+
 		PublicIncludePaths.Add(DiscordPath);
-		PublicAdditionalLibraries.Add(DiscordLibFile);
 		
-		PublicDependencyModuleNames.AddRange( new string[] { "Core" } );		
+		PublicDependencyModuleNames.AddRange( new string[] { "Core", "Projects" } );		
 		PrivateDependencyModuleNames.AddRange( new string[] { "CoreUObject", "Engine" } );
+
+		if (Target.Platform == UnrealTargetPlatform.Win64)
+		{
+			PublicDelayLoadDLLs.Add("discord_game_sdk.dll");
+			PublicAdditionalLibraries.Add(DiscordLibFile);
+			RuntimeDependencies.Add(DiscordDllFile);
+		}
 	}
 
 	private string DiscordPath
@@ -34,5 +45,10 @@ public class DiscordUE4 : ModuleRules
 	private string DiscordLibFile
 	{
 		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Binaries/Win64/discord_game_sdk.dll.lib")); }
+	}
+
+	private string DiscordDllFile
+	{
+		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Binaries/Win64/discord_game_sdk.dll")); }
 	}
 }
