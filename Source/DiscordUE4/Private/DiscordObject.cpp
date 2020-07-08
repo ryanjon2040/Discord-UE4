@@ -37,9 +37,7 @@ void UDiscordObject::DestroyDiscordObject()
 {
 	if (DiscordObjectInstance)
 	{
-		DiscordObjectInstance->bCanTick = false;
 		DiscordObjectInstance->StopDiscordTimer();
-		delete core;
 		DiscordObjectInstance->RemoveFromRoot();
 		DiscordObjectInstance->ConditionalBeginDestroy();
 		DiscordObjectInstance = nullptr;
