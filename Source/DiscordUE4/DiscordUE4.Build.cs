@@ -16,10 +16,10 @@ public class DiscordUE4 : ModuleRules
 
 		if (File.Exists(DiscordLibFile) == false)
 		{
-			throw new BuildException("discord_game_sdk.dll.lib was not found. Check it exists here: " + DiscordLibFile);
+			throw new BuildException(DiscordLibFileName + " was not found. Check it exists here: " + DiscordLibFile);
 		}
 
-		if (File.Exists(DiscordDllFile) == false)
+		if (IsWin64() && File.Exists(DiscordDllFile) == false)
 		{
 			throw new BuildException("discord_game_sdk.dll was not found. Check it exists here: " + DiscordDllFile);
 		}
@@ -29,12 +29,13 @@ public class DiscordUE4 : ModuleRules
 		PublicDependencyModuleNames.AddRange( new string[] { "Core", "Projects" } );		
 		PrivateDependencyModuleNames.AddRange( new string[] { "CoreUObject", "Engine" } );
 
-		if (Target.Platform == UnrealTargetPlatform.Win64)
+		PublicAdditionalLibraries.Add(DiscordLibFile);
+		if (IsWin64())
 		{
 			PublicDelayLoadDLLs.Add("discord_game_sdk.dll");
-			PublicAdditionalLibraries.Add(DiscordLibFile);
-			RuntimeDependencies.Add(DiscordDllFile);
 		}
+
+		RuntimeDependencies.Add(DiscordDllFile);
 	}
 
 	private string DiscordPath
@@ -44,11 +45,58 @@ public class DiscordUE4 : ModuleRules
 
 	private string DiscordLibFile
 	{
-		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Binaries/Win64/discord_game_sdk.dll.lib")); }
+		get 
+		{
+			return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Binaries/", GetPlatformName, DiscordLibFileName));
+		}
+	}
+
+	private string DiscordLibFileName
+	{
+		get
+		{
+			if (IsWin64())
+			{
+				return "discord_game_sdk.dll.lib";
+			}
+			else if (IsMac())
+			{
+				return "discord_game_sdk.dylib";
+			}
+
+			return null;
+		}
 	}
 
 	private string DiscordDllFile
 	{
 		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Binaries/Win64/discord_game_sdk.dll")); }
+	}
+
+	private bool IsWin64()
+	{
+		return Target.Platform == UnrealTargetPlatform.Win64;
+	}
+
+	private bool IsMac()
+	{
+		return Target.Platform == UnrealTargetPlatform.Mac;
+	}
+
+	private string GetPlatformName
+	{
+		get 
+		{
+			if (IsWin64())
+			{
+				return "Win64";
+			}
+			else if (IsMac())
+			{
+				return "Mac";
+			}
+
+			return null;
+		}
 	}
 }

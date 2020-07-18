@@ -20,7 +20,12 @@
 		{
 			"Name": "DiscordUE4",
 			"Type": "Runtime",
-			"LoadingPhase": "PreDefault"
+			"LoadingPhase": "PreDefault",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Win32",
+				"Mac"
+			]
 		}
 	]
 }

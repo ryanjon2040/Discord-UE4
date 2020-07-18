@@ -15,14 +15,18 @@ DEFINE_LOG_CATEGORY_STATIC(LogDiscordUE4, All, All)
 
 void FDiscordUE4Module::StartupModule()
 {
-#if PLATFORM_WINDOWS
 	LOG_NORMAL("Starting DiscordUE4 module.");
 
 	// Get the base directory of this plugin
 	const FString BaseDir = IPluginManager::Get().FindPlugin("DiscordUE4")->GetBaseDir();
 
 	// Add on the relative location of the third party dll and load it
+
+#if PLATFORM_WINDOWS
 	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Binaries"), TEXT("Win64"));
+#elif PLATFORM_MAC
+	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Binaries"), TEXT("Mac"));
+#endif
 	LOG_NORMAL(FString::Printf(TEXT("Discord directory is %s"), *DiscordDir));
 
 	static const FString DiscordDLLName = "discord_game_sdk";
@@ -35,7 +39,6 @@ void FDiscordUE4Module::StartupModule()
 		FMessageDialog::Open(EAppMsgType::Ok, FText::Format(LOCTEXT("LoadDependencyError", "Failed to load {Name} from path {Path}."), Arguments));
 		Internal_FreeDependency(DiscordHandle);
 	}
-#endif
 }
 
 void FDiscordUE4Module::ShutdownModule()
@@ -46,7 +49,7 @@ void FDiscordUE4Module::ShutdownModule()
 
 bool FDiscordUE4Module::Internal_LoadDependency(const FString& Dir, const FString& Name, void*& Handle)
 {
-#if PLATFORM_WINDOWS
+#if PLATFORM_WINDOWS || PLATFORM_MAC
 	FString Lib = Name + TEXT(".") + FPlatformProcess::GetModuleExtension();
 	FString Path = Dir.IsEmpty() ? *Lib : FPaths::Combine(*Dir, *Lib);
 
@@ -67,7 +70,7 @@ bool FDiscordUE4Module::Internal_LoadDependency(const FString& Dir, const FStrin
 
 void FDiscordUE4Module::Internal_FreeDependency(void*& Handle)
 {
-#if PLATFORM_WINDOWS
+#if PLATFORM_WINDOWS || PLATFORM_MAC
 	if (Handle != nullptr)
 	{
 		FPlatformProcess::FreeDllHandle(Handle);
