@@ -25,3 +25,33 @@ It is important to setup your game according to [Discord Startup Guide](https://
 
 Example Setup:
 ![Example Setup in Blueprint](DiscordSetup.png)
+
+# Compile error when using as Engine Plugin
+
+In Windows, with the latest SDK there are chances you might encounter compile errors when using this plugin as an Engine plugin. You might see the following errors:
+```
+warning C4005: 'TEXT': macro redefinition
+error C4668: '_WIN32_WINNT_WIN10_TH2' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+error C4668: '_WIN32_WINNT_WIN10_RS1' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+error C4668: '_WIN32_WINNT_WIN10_TH2' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+error C4668: '_WIN32_WINNT_WIN10_TH2' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+error C4668: '_WIN32_WINNT_WIN10_RS2' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+error C4668: '_WIN32_WINNT_WIN10_RS2' is not defined as a preprocessor macro, replacing with '0' for '#if/#elif'
+...
+```
+This is because of including `windows.h` header file in Discord files. To fix it follow the steps below:
+
+1: Open `ffi.h` and replace
+
+`#include <Windows.h>`
+
+with this:
+```
+#include "Runtime/Core/Public/Windows/AllowWindowsPlatformTypes.h"
+#include "Runtime/Core/Public/Windows/MinWindows.h"
+#include "Runtime/Core/Public/Windows/HideWindowsPlatformTypes.h"
+```
+
+2: Open `types.h` and remove `#include <Windows.h>`
+
+Both files can be found under `discord-files` folder.
