@@ -92,6 +92,21 @@ void UDiscordObject::SetLargeImage(const FString InKeyName)
 	}
 }
 
+void UDiscordObject::SetSmallImage(const FString InKeyName)
+{
+	activity.GetAssets().SetLargeImage(TCHAR_TO_UTF8(*InKeyName));
+	if (core)
+	{
+		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
+		{
+			uint8 ResultByte = (uint8)result;
+			DiscordObjectInstance->OnSmallImageSet.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
+			LogDisplay(FString::Printf(TEXT("Small Image Set Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
+		});
+	}
+}
+
+
 void UDiscordObject::StartDiscordTimer()
 {
 	activity.GetTimestamps().SetStart(FDateTime::UtcNow().ToUnixTimestamp());
