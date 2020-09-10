@@ -108,7 +108,7 @@ void UDiscordObject::SetSmallImage(const FString InKeyName)
 
 void UDiscordObject::SetLargeImageText(FString InNewDetails)
 {
-	activity.GetAssets().LargeText(TCHAR_TO_UTF8(*InNewDetails));
+	activity.GetAssets().SetLargeText(TCHAR_TO_UTF8(*InNewDetails));
 	if (core)
 	{
 		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
@@ -122,7 +122,7 @@ void UDiscordObject::SetLargeImageText(FString InNewDetails)
 
 void UDiscordObject::SetSmallImageText(FString InNewDetails)
 {
-	activity.GetAssets().SmallText(TCHAR_TO_UTF8(*InNewDetails));
+	activity.GetAssets().SetSmallText(TCHAR_TO_UTF8(*InNewDetails));
 	if (core)
 	{
 		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
