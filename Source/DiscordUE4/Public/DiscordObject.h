@@ -156,6 +156,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Discord")
 	void SetSmallImageText(const FString InKeyName);
 
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetPartyId(const FString InNewPartyId);
+
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetPartySize(const int32 InNewPartySize);
+
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetPartyMax(const int32 InNewPartyMax);
+
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetJoinSecret(const FString InNewJoinSecret);
+
 	/**
 	* public UDiscordObject::StartDiscordTimer
 	* Starts elapsed timer in Rich Presence.
