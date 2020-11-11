@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "2.0",
+	"VersionName": "1.3 (Discord 2.0)",
 	"FriendlyName": "Discord UE4",
 	"Description": "Discord Rich Presence.",
 	"Category": "Satheesh",
@@ -10,7 +10,6 @@
 	"DocsURL": "",
 	"MarketplaceURL": "",
 	"SupportURL": "https://discord.gg/QnzVK5R",
-	"EngineVersion": "4.25.0",
 	"CanContainContent": false,
 	"IsBetaVersion": true,
 	"IsExperimentalVersion": false,
