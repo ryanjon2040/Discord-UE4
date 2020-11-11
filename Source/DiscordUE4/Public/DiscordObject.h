@@ -100,15 +100,30 @@ public:
 
 	/**
 	* public static UDiscordObject::GetOrCreateDiscordObject
-	* Creates or get Discord Object Instance.
+	* DEPRECATED FUNCTION.
+	**/
+	UE_DEPRECATED(4.24, "Please use CreateDiscordObject and GetDiscordObject.")
+	UFUNCTION(BlueprintCallable, Category = "Discord", meta = (DeprecatedFunction, DeprecationMessage = "Please use Create Discord Object and Get Discord Object methods."))
+	static UDiscordObject* GetOrCreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning = false, const bool bStartElapsedTimer = true);
+
+	/**
+	* public static UDiscordObject::CreateDiscordObject
+	* Creates the static Discord Object Instance.
 	* @See Make sure you setup your app as per this documentation https://discord.com/developers/docs/game-sdk/sdk-starter-guide
 	* @param InClientID [FString] The client ID of your application after creating it in https://discord.com/developers/
 	* @param bRequireDiscordRunning [const bool] If false, the game will close, Discord will re-open, and will try and relaunch your game. IMPORTANT NOTE: Editor will crash if this is true and discord is NOT running.
 	* @param bStartElapsedTimer [const bool] If true, rich presence will show elapsed time. You can manually start time stamps by calling Start/Stop Discord Timer.
-	* @returns [UDiscordObject*] Discord object instance.
 	**/
-	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static UDiscordObject* GetOrCreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning = false, const bool bStartElapsedTimer = true);
+	UFUNCTION(BlueprintCallable, Category = "Discord")	
+	static void CreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning = false, const bool bStartElapsedTimer = true);
+
+	/**
+	* public static UDiscordObject::GetDiscordObject
+	* Returns static DiscordObjectInstance.
+	* @return [UDiscordObject*] Discord object instance if valid.
+	**/
+	UFUNCTION(BlueprintPure, Category = "Discord")	
+	static UDiscordObject* GetDiscordObject();
 
 	/**
 	* public static UDiscordObject::DestroyDiscordObject

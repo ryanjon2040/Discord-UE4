@@ -25,11 +25,24 @@ UDiscordObject* UDiscordObject::GetOrCreateDiscordObject(FString InClientID, con
 {
 	if (DiscordObjectInstance == nullptr)
 	{
+		CreateDiscordObject(InClientID, bRequireDiscordRunning, bStartElapsedTimer);
+	}
+	
+	return DiscordObjectInstance;
+}
+
+void UDiscordObject::CreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning /*= false*/, const bool bStartElapsedTimer /*= true*/)
+{
+	if (DiscordObjectInstance == nullptr)
+	{
 		DiscordObjectInstance = NewObject<UDiscordObject>();
 		DiscordObjectInstance->AddToRoot();
 		DiscordObjectInstance->Internal_CreateDiscordObject(InClientID, bRequireDiscordRunning, bStartElapsedTimer);
 	}
-	
+}
+
+UDiscordObject* UDiscordObject::GetDiscordObject()
+{
 	return DiscordObjectInstance;
 }
 
