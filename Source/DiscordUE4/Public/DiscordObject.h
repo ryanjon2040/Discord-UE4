@@ -87,6 +87,18 @@ public:
 	FOnDiscordResult OnSmallImageSet;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordResult OnPartyIdSet;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordResult OnPartySizeSet;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordResult OnPartyMaxSet;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordResult OnJoinSecretSet;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
 	FOnDiscordResult OnLargeTextSet;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
