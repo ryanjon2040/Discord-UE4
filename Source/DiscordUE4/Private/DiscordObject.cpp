@@ -142,6 +142,7 @@ void UDiscordObject::SetPartyId(FString InNewPartyId)
 		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
 			{
 				uint8 ResultByte = (uint8)result;
+				DiscordObjectInstance->OnPartyIdSet.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
 				LogDisplay(FString::Printf(TEXT("Party id set. Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
 			});
 	}
@@ -155,6 +156,7 @@ void UDiscordObject::SetPartySize(int32 InNewPartySize)
 		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
 			{
 				uint8 ResultByte = (uint8)result;
+				DiscordObjectInstance->OnPartySizeSet.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
 				LogDisplay(FString::Printf(TEXT("Party size set. Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
 			});
 	}
@@ -168,6 +170,7 @@ void UDiscordObject::SetPartyMax(int32 InNewPartyMax)
 		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
 			{
 				uint8 ResultByte = (uint8)result;
+				DiscordObjectInstance->OnPartyMaxSet.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
 				LogDisplay(FString::Printf(TEXT("Party max set. Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
 			});
 	}
@@ -181,6 +184,7 @@ void UDiscordObject::SetJoinSecret(FString InNewJoinSecret)
 		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
 			{
 				uint8 ResultByte = (uint8)result;
+				DiscordObjectInstance->OnJoinSecretSet.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
 				LogDisplay(FString::Printf(TEXT("Join secret set. Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
 			});
 	}
