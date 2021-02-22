@@ -123,7 +123,7 @@ public:
 	* Creates the static Discord Object Instance.
 	* @See Make sure you setup your app as per this documentation https://discord.com/developers/docs/game-sdk/sdk-starter-guide
 	* @param InClientID [FString] The client ID of your application after creating it in https://discord.com/developers/
-	* @param bRequireDiscordRunning [const bool] If false, the game will close, Discord will re-open, and will try and relaunch your game. IMPORTANT NOTE: Editor will crash if this is true and discord is NOT running.
+	* @param bRequireDiscordRunning [const bool] If true, the game will close, opens Discord, and will try to launch your game. IMPORTANT NOTE: Only works in packaged game and NOT in Editor, PIE etc.
 	* @param bStartElapsedTimer [const bool] If true, rich presence will show elapsed time. You can manually start time stamps by calling Start/Stop Discord Timer.
 	**/
 	UFUNCTION(BlueprintCallable, Category = "Discord")	
