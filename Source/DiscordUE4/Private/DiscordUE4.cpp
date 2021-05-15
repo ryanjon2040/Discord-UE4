@@ -23,9 +23,9 @@ void FDiscordUE4Module::StartupModule()
 	// Add on the relative location of the third party dll and load it
 
 #if PLATFORM_WINDOWS
-	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Binaries"), TEXT("Win64"));
+	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("discord-files"), TEXT("Win64"));
 #elif PLATFORM_MAC
-	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Binaries"), TEXT("Mac"));
+	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("discord-files"), TEXT("Mac"));
 #endif
 	LOG_NORMAL(FString::Printf(TEXT("Discord directory is %s"), *DiscordDir));
 

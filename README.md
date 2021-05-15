@@ -13,7 +13,7 @@ First you will need to download the binaries from Discord. Head over to [Discord
 
 ![SDK_Download](Documentation/DownloadSDK.png)
 
-After downloading, open the zip file and extract the `.dll` and `.lib` files from the `lib/x86_64` folder to `Binaries/Win64/` folder of this plugin. If you don't have `Binaries/Win64` folder, create it. Example of my setup:
+After downloading, open the zip file and extract the `.dll` and `.lib` files from the `lib/x86_64` folder to `Source/ThirdParty/discord-files/Win64/` folder of this plugin. If you don't have `ThirdParty/discord-files/Win64` folder, create it. Example of my setup:
 
 ![Extracted Example](Documentation/ExtractedExample.png)
 

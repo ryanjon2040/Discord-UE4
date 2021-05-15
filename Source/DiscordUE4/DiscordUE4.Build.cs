@@ -45,9 +45,9 @@ public class DiscordUE4 : ModuleRules
 
 	private string DiscordLibFile
 	{
-		get 
+		get
 		{
-			return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Binaries/", GetPlatformName, DiscordLibFileName));
+			return Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty/discord-files/", GetPlatformName, DiscordLibFileName));
 		}
 	}
 
@@ -70,7 +70,7 @@ public class DiscordUE4 : ModuleRules
 
 	private string DiscordDllFile
 	{
-		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Binaries/Win64/discord_game_sdk.dll")); }
+		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty/discord-files/Win64/discord_game_sdk.dll")); }
 	}
 
 	private bool IsWin64()
