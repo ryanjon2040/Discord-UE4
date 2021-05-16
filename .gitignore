@@ -11,6 +11,11 @@
 *.gch
 *.pch
 
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
 # Fortran module files
 *.mod
 
@@ -18,6 +23,10 @@
 *.lai
 *.la
 *.a
+*.lib
+
+# MacOS library bundles
+*.bundle
 
 # Executables
 *.exe
@@ -40,9 +49,7 @@ SourceArt/**/*.png
 SourceArt/**/*.tga
 
 # Binary Files
-Binaries/Win64/UE4Editor.modules
-Binaries/Win64/UE4Editor-DiscordUE4.dll
-Binaries/Win64/UE4Editor-DiscordUE4.pdb
+Binaries/*
 
 # Builds
 Build/*
@@ -67,6 +74,7 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
-Binaries/
-discord-files/
+
+# Files provided by discord
 Source/DiscordUE4/discord-files/
+Source/ThirdParty/discord-files/
