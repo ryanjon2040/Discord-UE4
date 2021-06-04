@@ -13,7 +13,10 @@ First you will need to download the binaries from Discord. Head over to [Discord
 
 ![SDK_Download](Documentation/DownloadSDK.png)
 
-After downloading, open the zip file and extract the `.dll` and `.lib` files from the `lib/x86_64` folder to `Source/ThirdParty/discord-files/Win64/` folder of this plugin.
+After downloading, open the zip file and extract the library files from the `lib/x86_64` folder to the following folders of this plugin:
+- `discord_game_sdk.dll` and `discord_game_sdk.dll.lib` into `Source/ThirdParty/discord-files/Win64/`
+- `discord_game_sdk.bundle` and `discord_game_sdk.dylib` into `Source/ThirdParty/discord-files/Mac/`
+- `discord_game_sdk.so` into `Source/ThirdParty/discord-files/Linux/x86_64-unknown-linux-gnu/` **and rename it to `libdiscord_game_sdk.so`**
 
 After copying the binary files, open the `cpp` folder inside the zip file and extract all the contents to `Source/DiscordUE4/discord-files` folder.
 
