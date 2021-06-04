@@ -24,6 +24,10 @@ It is important to setup your game according to [Discord Startup Guide](https://
 Example Setup:
 ![Example Setup in Blueprint](DiscordSetup.png)
 
+# Win32 Support
+
+This plugin does not support Win32 out-of-the-box but if you need it please check out shukenmg's repository: https://github.com/shukenmg/Discord-UE4/tree/win32
+
 # Compile error when using as Engine Plugin
 
 In Windows, with the latest SDK there are chances you might encounter compile errors when using this plugin as an Engine plugin. You might see the following errors:
