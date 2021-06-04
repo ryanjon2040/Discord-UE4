@@ -13,7 +13,7 @@ First you will need to download the binaries from Discord. Head over to [Discord
 
 ![SDK_Download](Documentation/DownloadSDK.png)
 
-After downloading, open the zip file and extract the `.dll` and `.lib` files from the `lib/x86_64` folder to `Source/ThirdParty/discord-files/Win64/` folder of this plugin.
+After downloading, open the zip file and extract the `.dll` and `.lib` files from the `lib/x86_64` and `lib/x86` folders to `Source/ThirdParty/discord-files/Win64/` and `Source/ThirdParty/discord-files/Win32/` folder of this plugin, respectively.
 
 After copying the binary files, open the `cpp` folder inside the zip file and extract all the contents to `Source/DiscordUE4/discord-files` folder.
 
