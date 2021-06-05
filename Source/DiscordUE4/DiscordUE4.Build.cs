@@ -19,9 +19,9 @@ public class DiscordUE4 : ModuleRules
 			throw new BuildException(DiscordLibFileName + " was not found. Check it exists here: " + DiscordLibFile);
 		}
 
-		if (IsWin64() && File.Exists(DiscordDllFile) == false)
+		if (IsWin64() && File.Exists(DiscordRuntimeDepFile) == false)
 		{
-			throw new BuildException("discord_game_sdk.dll was not found. Check it exists here: " + DiscordDllFile);
+			throw new BuildException("discord_game_sdk.dll was not found. Check it exists here: " + DiscordRuntimeDepFile);
 		}
 
 		PublicIncludePaths.Add(DiscordPath);
@@ -35,7 +35,7 @@ public class DiscordUE4 : ModuleRules
 			PublicDelayLoadDLLs.Add("discord_game_sdk.dll");
 		}
 
-		RuntimeDependencies.Add(DiscordDllFile);
+		RuntimeDependencies.Add(DiscordRuntimeDepFile);
 	}
 
 	private string DiscordPath
@@ -63,14 +63,29 @@ public class DiscordUE4 : ModuleRules
 			{
 				return "discord_game_sdk.dylib";
 			}
+			else if (IsLinux())
+			{
+				return "libdiscord_game_sdk.so";
+			}
 
 			return null;
 		}
 	}
 
-	private string DiscordDllFile
+	private string DiscordRuntimeDepFile
 	{
-		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty/discord-files/Win64/discord_game_sdk.dll")); }
+		get
+		{
+			// Only Windows needs separate library and runtime dependency files
+			if (IsWin64())
+			{
+				return Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty/discord-files/Win64/discord_game_sdk.dll"));
+			}
+			else
+			{
+				return DiscordLibFile;
+			}
+		}
 	}
 
 	private bool IsWin64()
@@ -81,6 +96,11 @@ public class DiscordUE4 : ModuleRules
 	private bool IsMac()
 	{
 		return Target.Platform == UnrealTargetPlatform.Mac;
+	}
+
+	private bool IsLinux()
+	{
+		return Target.Platform == UnrealTargetPlatform.Linux;
 	}
 
 	private string GetPlatformName
@@ -94,6 +114,10 @@ public class DiscordUE4 : ModuleRules
 			else if (IsMac())
 			{
 				return "Mac";
+			}
+			else if (IsLinux())
+			{
+				return "Linux/x86_64-unknown-linux-gnu";
 			}
 
 			return null;
