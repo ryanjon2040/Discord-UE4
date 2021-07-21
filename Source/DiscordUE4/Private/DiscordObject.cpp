@@ -210,6 +210,9 @@ void UDiscordObject::SetJoinSecret(FString InNewJoinSecret)
 
 void UDiscordObject::StartDiscordTimer()
 {
+	// probably only needed in the editor, but this resets the time across multiple sessions, preventing 00:00 remaining from displaying.
+	activity.GetTimestamps().SetEnd(0);
+
 	activity.GetTimestamps().SetStart(FDateTime::UtcNow().ToUnixTimestamp());
 	if (core)
 	{
