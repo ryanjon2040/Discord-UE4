@@ -214,12 +214,11 @@ private:
 	void Internal_CreateDiscordObject(const FString& InClientID, const bool bRequireDiscordRunning, const bool bStartElapsedTimer);
 
 public:
-
-	void Tick(float DeltaTime) override;
-
-	bool IsTickable() const override { return bCanTick; }
-	bool IsTickableInEditor() const override { return true; }
-	bool IsTickableWhenPaused() const override { return true; }
-	TStatId GetStatId() const override { return TStatId(); }
+	
+	virtual void Tick(float DeltaTime) override;
+	virtual bool IsTickable() const override { return bCanTick; }
+	virtual bool IsTickableInEditor() const override { return true; }
+	virtual bool IsTickableWhenPaused() const override { return true; }
+	virtual TStatId GetStatId() const override { return TStatId(); }
 	
 };
