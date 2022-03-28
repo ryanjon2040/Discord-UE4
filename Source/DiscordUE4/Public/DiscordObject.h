@@ -223,7 +223,7 @@ private:
 
 public:
 
-	void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override;
 	virtual bool IsTickable() const override { return bCanTick; }
 	virtual bool IsTickableInEditor() const override { return true; }
 	virtual bool IsTickableWhenPaused() const override { return true; }
