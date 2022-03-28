@@ -209,16 +209,25 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Discord")	
 	void StopDiscordTimer();
 
+	/**
+	* public UdDiscordObject::SetTimerEnd
+	* Sets the Rich Presence timer to UtcNow + Duration.
+	**/
+
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetDiscordTimer(FTimespan Duration);
+
 private:
 
 	void Internal_CreateDiscordObject(const FString& InClientID, const bool bRequireDiscordRunning, const bool bStartElapsedTimer);
 
 public:
-	
-	virtual void Tick(float DeltaTime) override;
-	virtual bool IsTickable() const override { return bCanTick; }
-	virtual bool IsTickableInEditor() const override { return true; }
-	virtual bool IsTickableWhenPaused() const override { return true; }
-	virtual TStatId GetStatId() const override { return TStatId(); }
+
+	void Tick(float DeltaTime) override;
+
+	bool IsTickable() const override { return bCanTick; }
+	bool IsTickableInEditor() const override { return true; }
+	bool IsTickableWhenPaused() const override { return true; }
+	TStatId GetStatId() const override { return TStatId(); }
 	
 };
