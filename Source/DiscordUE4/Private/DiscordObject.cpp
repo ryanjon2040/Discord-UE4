@@ -242,7 +242,7 @@ void UDiscordObject::StopDiscordTimer()
 
 void UDiscordObject::SetDiscordTimer(FTimespan Duration)
 {
-	FDateTime TimerEnd = FDateTime::UtcNow().operator+(Duration);
+	FDateTime TimerEnd = FDateTime::UtcNow().operator+=(Duration);
 	DiscordObjectInstance->bTimerStarted = true;
 	activity.GetTimestamps().SetEnd(TimerEnd.ToUnixTimestamp());
 	if (core)
