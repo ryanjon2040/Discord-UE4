@@ -222,7 +222,7 @@ private:
 	void Internal_CreateDiscordObject(const FString& InClientID, const bool bRequireDiscordRunning, const bool bStartElapsedTimer);
 
 public:
-
+	
 	virtual void Tick(float DeltaTime) override;
 	virtual bool IsTickable() const override { return bCanTick; }
 	virtual bool IsTickableInEditor() const override { return true; }
