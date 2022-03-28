@@ -212,7 +212,6 @@ void UDiscordObject::StartDiscordTimer()
 {
 	// probably only needed in the editor, but this resets the time across multiple sessions, preventing 00:00 remaining from displaying.
 	activity.GetTimestamps().SetEnd(0);
-
 	activity.GetTimestamps().SetStart(FDateTime::UtcNow().ToUnixTimestamp());
 	if (core)
 	{
@@ -240,12 +239,28 @@ void UDiscordObject::StopDiscordTimer()
 	}
 }
 
+void UDiscordObject::SetDiscordTimer(FTimespan Duration)
+{
+	FDateTime TimerEnd = FDateTime::UtcNow().operator+=(Duration);
+	DiscordObjectInstance->bTimerStarted = true;
+	activity.GetTimestamps().SetEnd(TimerEnd.ToUnixTimestamp());
+	if (core)
+	{
+		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
+			{
+				uint8 ResultByte = (uint8)result;
+				DiscordObjectInstance->OnTimerStart.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
+				LogDisplay(FString::Printf(TEXT("Timer Set Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
+			});
+	}
+}
+
 void UDiscordObject::Internal_CreateDiscordObject(const FString& InClientID, const bool bRequireDiscordRunning, const bool bStartElapsedTimer)
 {	
 #if WITH_EDITOR
 	discord::Result result = discord::Core::Create(FCString::Atoi64(*InClientID), DiscordCreateFlags_NoRequireDiscord, &core);
 #else
-	discord::Result result = discord::Core::Create(FCString::Atoi64(*InClientID), bRequireDiscordRunning ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &core);
+	discord::Result result = discord::Core::Create(FCString::Atoi64(*InClientID, NULL, 10), bRequireDiscordRunning ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &core);
 #endif
 	if (result == discord::Result::Ok)
 	{
