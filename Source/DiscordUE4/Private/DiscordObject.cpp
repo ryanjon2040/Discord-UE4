@@ -212,7 +212,7 @@ void UDiscordObject::StartDiscordTimer()
 {
 	// probably only needed in the editor, but this resets the time across multiple sessions, preventing 00:00 remaining from displaying.
 	activity.GetTimestamps().SetEnd(0);
-
+	
 	activity.GetTimestamps().SetStart(FDateTime::UtcNow().ToUnixTimestamp());
 	if (core)
 	{
@@ -237,6 +237,22 @@ void UDiscordObject::StopDiscordTimer()
 			DiscordObjectInstance->OnTimerEnd.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
 			LogDisplay(FString::Printf(TEXT("Timer End Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
 		});
+	}
+}
+
+void UDiscordObject::SetDiscordTimer(FTimespan Duration)
+{
+	FDateTime TimerEnd = FDateTime::UtcNow().operator+=(Duration);
+	DiscordObjectInstance->bTimerStarted = true;
+	activity.GetTimestamps().SetEnd(TimerEnd.ToUnixTimestamp());
+	if (core)
+	{
+		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
+			{
+				uint8 ResultByte = (uint8)result;
+				DiscordObjectInstance->OnTimerStart.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
+				LogDisplay(FString::Printf(TEXT("Timer Set Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
+			});
 	}
 }
 

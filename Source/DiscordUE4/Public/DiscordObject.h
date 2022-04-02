@@ -209,6 +209,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Discord")	
 	void StopDiscordTimer();
 
+	/**
+	* public UdDiscordObject::SetTimerEnd
+	* Sets the Rich Presence timer to UtcNow + Duration.
+	**/
+
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetDiscordTimer(FTimespan Duration);
+
 private:
 
 	void Internal_CreateDiscordObject(const FString& InClientID, const bool bRequireDiscordRunning, const bool bStartElapsedTimer);
