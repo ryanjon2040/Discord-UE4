@@ -87,18 +87,6 @@ public:
 	FOnDiscordResult OnSmallImageSet;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
-	FOnDiscordResult OnPartyIdSet;
-	
-	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
-	FOnDiscordResult OnPartySizeSet;
-	
-	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
-	FOnDiscordResult OnPartyMaxSet;
-	
-	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
-	FOnDiscordResult OnJoinSecretSet;
-	
-	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
 	FOnDiscordResult OnLargeTextSet;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
@@ -123,7 +111,7 @@ public:
 	* Creates the static Discord Object Instance.
 	* @See Make sure you setup your app as per this documentation https://discord.com/developers/docs/game-sdk/sdk-starter-guide
 	* @param InClientID [FString] The client ID of your application after creating it in https://discord.com/developers/
-	* @param bRequireDiscordRunning [const bool] If true, the game will close, opens Discord, and will try to launch your game. IMPORTANT NOTE: Only works in packaged game and NOT in Editor, PIE etc.
+	* @param bRequireDiscordRunning [const bool] If false, the game will close, Discord will re-open, and will try and relaunch your game. IMPORTANT NOTE: Editor will crash if this is true and discord is NOT running.
 	* @param bStartElapsedTimer [const bool] If true, rich presence will show elapsed time. You can manually start time stamps by calling Start/Stop Discord Timer.
 	**/
 	UFUNCTION(BlueprintCallable, Category = "Discord")	
@@ -183,18 +171,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Discord")
 	void SetSmallImageText(const FString InKeyName);
 
-	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetPartyId(const FString InNewPartyId);
-
-	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetPartySize(const int32 InNewPartySize);
-
-	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetPartyMax(const int32 InNewPartyMax);
-
-	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetJoinSecret(const FString InNewJoinSecret);
-
 	/**
 	* public UDiscordObject::StartDiscordTimer
 	* Starts elapsed timer in Rich Presence.
@@ -214,11 +190,12 @@ private:
 	void Internal_CreateDiscordObject(const FString& InClientID, const bool bRequireDiscordRunning, const bool bStartElapsedTimer);
 
 public:
-	
-	virtual void Tick(float DeltaTime) override;
-	virtual bool IsTickable() const override { return bCanTick; }
-	virtual bool IsTickableInEditor() const override { return true; }
-	virtual bool IsTickableWhenPaused() const override { return true; }
-	virtual TStatId GetStatId() const override { return TStatId(); }
+
+	void Tick(float DeltaTime) override;
+
+	bool IsTickable() const override { return bCanTick; }
+	bool IsTickableInEditor() const override { return true; }
+	bool IsTickableWhenPaused() const override { return true; }
+	TStatId GetStatId() const override { return TStatId(); }
 	
 };
