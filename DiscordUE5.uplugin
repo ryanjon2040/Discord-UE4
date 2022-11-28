@@ -18,7 +18,7 @@
 	"EnabledByDefault": true,
 	"Modules": [
 		{
-			"Name": "DiscordUE4",
+			"Name": "DiscordUE5",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
 			"WhitelistPlatforms": [
