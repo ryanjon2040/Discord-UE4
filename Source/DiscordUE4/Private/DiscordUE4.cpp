@@ -23,25 +23,18 @@ void FDiscordUE4Module::StartupModule()
 	// Add on the relative location of the third party dll and load it
 
 #if PLATFORM_WINDOWS
-	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("discord-files"), TEXT("Win64"));
+	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Binaries"), TEXT("Win64"));
 #elif PLATFORM_MAC
-	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("discord-files"), TEXT("Mac"));
-#elif PLATFORM_LINUX
-	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("discord-files"), TEXT("Linux"), TEXT("x86_64-unknown-linux-gnu"));
+	const FString DiscordDir = FPaths::Combine(*BaseDir, TEXT("Binaries"), TEXT("Mac"));
 #endif
 	LOG_NORMAL(FString::Printf(TEXT("Discord directory is %s"), *DiscordDir));
 
-#if PLATFORM_LINUX
-	static const FString DiscordLibName = "libdiscord_game_sdk";
-#else
-	static const FString DiscordLibName = "discord_game_sdk";
-#endif
-
-	const bool bDependencyLoaded = Internal_LoadDependency(DiscordDir, DiscordLibName, DiscordHandle);
+	static const FString DiscordDLLName = "discord_game_sdk";
+	const bool bDependencyLoaded = Internal_LoadDependency(DiscordDir, DiscordDLLName, DiscordHandle);
 	if (!bDependencyLoaded)
 	{
 		FFormatNamedArguments Arguments;
-		Arguments.Add(TEXT("Name"), FText::FromString(DiscordLibName));
+		Arguments.Add(TEXT("Name"), FText::FromString(DiscordDLLName));
 		Arguments.Add(TEXT("Path"), FText::FromString(DiscordDir));
 		FMessageDialog::Open(EAppMsgType::Ok, FText::Format(LOCTEXT("LoadDependencyError", "Failed to load {Name} from path {Path}."), Arguments));
 		Internal_FreeDependency(DiscordHandle);
@@ -56,7 +49,7 @@ void FDiscordUE4Module::ShutdownModule()
 
 bool FDiscordUE4Module::Internal_LoadDependency(const FString& Dir, const FString& Name, void*& Handle)
 {
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if PLATFORM_WINDOWS || PLATFORM_MAC
 	FString Lib = Name + TEXT(".") + FPlatformProcess::GetModuleExtension();
 	FString Path = Dir.IsEmpty() ? *Lib : FPaths::Combine(*Dir, *Lib);
 
@@ -77,7 +70,7 @@ bool FDiscordUE4Module::Internal_LoadDependency(const FString& Dir, const FStrin
 
 void FDiscordUE4Module::Internal_FreeDependency(void*& Handle)
 {
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if PLATFORM_WINDOWS || PLATFORM_MAC
 	if (Handle != nullptr)
 	{
 		FPlatformProcess::FreeDllHandle(Handle);

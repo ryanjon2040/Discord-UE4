@@ -1,6 +1,6 @@
 # Discord-UE4
 
-Plugin for integrating Discord Rich Presence in Unreal Engine 4. Blueprints only example project is [available here](https://github.com/ryanjon2040/Discord-UE4-Example-Project).
+Plugin for integrating Discord Rich Presence in Unreal Engine 5. Blueprints only example project is [available here](https://github.com/ryanjon2040/Discord-UE4-Example-Project).
 
 [![Discord Link](https://img.shields.io/discord/685402622844600329?logo=discord&style=for-the-badge)](https://discord.gg/QnzVK5R) [![GitHub All Releases](https://img.shields.io/github/downloads/ryanjon2040/Discord-UE4/total?logo=github&style=for-the-badge)](https://github.com/ryanjon2040/Discord-UE4/releases) ![GitHub repo size](https://img.shields.io/github/repo-size/ryanjon2040/Discord-UE4?logo=github&style=for-the-badge) [![GitHub](https://img.shields.io/github/license/ryanjon2040/Discord-UE4?style=for-the-badge)](https://github.com/ryanjon2040/Discord-UE4/blob/master/LICENSE)
 
@@ -13,12 +13,11 @@ First you will need to download the binaries from Discord. Head over to [Discord
 
 ![SDK_Download](Documentation/DownloadSDK.png)
 
-After downloading, open the zip file and extract the library files from the `lib/x86_64` folder to the following folders of this plugin:
-- `discord_game_sdk.dll` and `discord_game_sdk.dll.lib` into `Source/ThirdParty/discord-files/Win64/`
-- `discord_game_sdk.bundle` and `discord_game_sdk.dylib` into `Source/ThirdParty/discord-files/Mac/`
-- `discord_game_sdk.so` into `Source/ThirdParty/discord-files/Linux/x86_64-unknown-linux-gnu/` **and rename it to `libdiscord_game_sdk.so`**
+After downloading, open the zip file and extract the `.dll` and `.lib` files from the `lib/x86_64` folder to `Binaries/Win64/` folder of this plugin. If you don't have `Binaries/Win64` folder, create it. Example of my setup:
 
-After copying the binary files, open the `cpp` folder inside the zip file and extract all the contents to `Source/DiscordUE4/discord-files` folder.
+![Extracted Example](Documentation/ExtractedExample.png)
+
+After copying the binary files, open the `cpp` folder inside the zip file and extract all the contents to `Source/DiscordUE4/discord-files` folder. If the `discord-files` folder doesn't exist, create it.
 
 Now you are good to go.
 
@@ -26,10 +25,6 @@ It is important to setup your game according to [Discord Startup Guide](https://
 
 Example Setup:
 ![Example Setup in Blueprint](DiscordSetup.png)
-
-# Win32 Support
-
-This plugin does not support Win32 out-of-the-box but if you need it please check out shukenmg's repository: https://github.com/shukenmg/Discord-UE4/tree/win32
 
 # Compile error when using as Engine Plugin
 

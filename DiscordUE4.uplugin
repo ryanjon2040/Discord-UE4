@@ -2,16 +2,17 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.3 (Discord 2.0)",
-	"FriendlyName": "Discord UE4",
+	"FriendlyName": "Discord UE5",
 	"Description": "Discord Rich Presence.",
-	"Category": "Satheesh",
-	"CreatedBy": "Satheesh Pv (ryanjon2040)",
+	"Category": "Discord",
+	"CreatedBy": "Satheesh Pv (ryanjon2040), updated to UE5 by fluffy",
 	"CreatedByURL": "https://unrealxeditor.wordpress.com/",
-	"DocsURL": "",
+	"DocsURL": "https://github.com/ryanjon2040/Discord-UE4",
 	"MarketplaceURL": "",
 	"SupportURL": "https://discord.gg/QnzVK5R",
+	"EngineVersion": "5.0.0",
 	"CanContainContent": false,
-	"IsBetaVersion": true,
+	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": true,
 	"EnabledByDefault": true,
@@ -22,8 +23,8 @@
 			"LoadingPhase": "PreDefault",
 			"WhitelistPlatforms": [
 				"Win64",
-				"Mac",
-				"Linux"
+				"Win32",
+				"Mac"
 			]
 		}
 	]
