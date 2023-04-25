@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "Tickable.h"
 #include "DiscordObject.generated.h"
 
@@ -63,9 +61,7 @@ class DISCORDUE4_API UDiscordObject : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 
-private:
-
-	static UDiscordObject* DiscordObjectInstance;
+	static TStrongObjectPtr<UDiscordObject> DiscordObjectInstance;
 
 	uint8 bCanTick : 1;
 	uint8 bTimerStarted : 1;
@@ -109,14 +105,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
 	FOnDiscordResult OnTimerEnd;
-
-	/**
-	* public static UDiscordObject::GetOrCreateDiscordObject
-	* DEPRECATED FUNCTION.
-	**/
-	UE_DEPRECATED(4.24, "Please use CreateDiscordObject and GetDiscordObject.")
-	UFUNCTION(BlueprintCallable, Category = "Discord", meta = (DeprecatedFunction, DeprecationMessage = "Please use Create Discord Object and Get Discord Object methods."))
-	static UDiscordObject* GetOrCreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning = false, const bool bStartElapsedTimer = true);
 
 	/**
 	* public static UDiscordObject::CreateDiscordObject

@@ -1,6 +1,5 @@
 // Created by Satheesh (ryanjon2040). Twitter: https://twitter.com/ryanjon2040. Discord: @ryanjon2040#5319
 
-
 #include "DiscordObject.h"
 #include "../discord-files/discord.h"
 #include "UObject/Class.h"
@@ -13,29 +12,18 @@ DEFINE_LOG_CATEGORY_STATIC(LogDiscord, Log, All)
 discord::Core* core{};
 discord::Activity activity{};
 
-UDiscordObject* UDiscordObject::DiscordObjectInstance = nullptr;
-
+TStrongObjectPtr<UDiscordObject> UDiscordObject::DiscordObjectInstance = nullptr;
 
 UDiscordObject::UDiscordObject()
 {
 	bCanTick = bTimerStarted = false;
 }
 
-UDiscordObject* UDiscordObject::GetOrCreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning /*= false*/, const bool bStartElapsedTimer /*= true*/)
-{
-	if (DiscordObjectInstance == nullptr)
-	{
-		CreateDiscordObject(InClientID, bRequireDiscordRunning, bStartElapsedTimer);
-	}
-	
-	return DiscordObjectInstance;
-}
-
 void UDiscordObject::CreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning /*= false*/, const bool bStartElapsedTimer /*= true*/)
 {
-	if (DiscordObjectInstance == nullptr)
+	if (!DiscordObjectInstance.IsValid())
 	{
-		DiscordObjectInstance = NewObject<UDiscordObject>();
+		DiscordObjectInstance = TStrongObjectPtr(NewObject<UDiscordObject>());
 		DiscordObjectInstance->AddToRoot();
 		DiscordObjectInstance->Internal_CreateDiscordObject(InClientID, bRequireDiscordRunning, bStartElapsedTimer);
 	}
@@ -43,7 +31,7 @@ void UDiscordObject::CreateDiscordObject(FString InClientID, const bool bRequire
 
 UDiscordObject* UDiscordObject::GetDiscordObject()
 {
-	return DiscordObjectInstance;
+	return DiscordObjectInstance.Get();
 }
 
 void UDiscordObject::DestroyDiscordObject()
@@ -57,7 +45,7 @@ void UDiscordObject::DestroyDiscordObject()
 		delete core;
 		core = nullptr;
 		DiscordObjectInstance->RemoveFromRoot();
-		DiscordObjectInstance->ConditionalBeginDestroy();
+		DiscordObjectInstance->MarkAsGarbage();
 		DiscordObjectInstance = nullptr;
 		LogDisplay("Discord object destroyed.");
 	}
