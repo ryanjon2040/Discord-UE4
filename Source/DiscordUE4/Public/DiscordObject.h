@@ -95,6 +95,9 @@ public:
 	FOnDiscordResult OnJoinSecretSet;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordResult OnSpectateSecretSet;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
 	FOnDiscordResult OnLargeTextSet;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
@@ -105,6 +108,29 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
 	FOnDiscordResult OnTimerEnd;
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDiscordActivitySpectate, FString, SpectateSecret);
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordActivitySpectate OnActivitySpectate;
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDiscordActivityJoin, FString, JoinSecret);
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordActivityJoin OnActivityJoin;
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDiscordActivityJoinRequest, FString, UserId, FString, UserName);
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordActivityJoinRequest OnActivityJoinRequest;
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDiscordActivityInvite, FString, UserId, FString, UserName);
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordActivityInvite OnActivityInviteToParty;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordActivityInvite OnActivityInviteToSpectate;
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDiscordUserUpdated, FString, UserId);
+	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
+	FOnDiscordUserUpdated OnDiscordUserUpdated;
 
 	/**
 	* public static UDiscordObject::CreateDiscordObject
@@ -182,6 +208,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
 	void SetJoinSecret(const FString InNewJoinSecret);
+
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetSpectateSecret(const FString InNewSpectateSecret);
+
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	void SetSteamAppId(const FString IsNewSteamAppId);
 
 	/**
 	* public UDiscordObject::StartDiscordTimer
