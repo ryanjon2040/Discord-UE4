@@ -26,6 +26,52 @@ void UDiscordObject::CreateDiscordObject(FString InClientID, const bool bRequire
 		DiscordObjectInstance = TStrongObjectPtr(NewObject<UDiscordObject>());
 		DiscordObjectInstance->AddToRoot();
 		DiscordObjectInstance->Internal_CreateDiscordObject(InClientID, bRequireDiscordRunning, bStartElapsedTimer);
+
+		if (core)
+		{
+			core->ActivityManager().OnActivityJoin.Connect([](const char* secret)
+			{
+				DiscordObjectInstance->OnActivityJoin.Broadcast(FString(secret));
+			});
+
+			core->ActivityManager().OnActivityJoinRequest.Connect([](discord::User const& user)
+			{
+				DiscordObjectInstance->OnActivityJoinRequest.Broadcast(FString::FromInt((int32)user.GetId()),
+					FString(user.GetUsername()));
+			});
+
+			core->ActivityManager().OnActivityInvite.Connect([](discord::ActivityActionType type, discord::User const& user,
+				discord::Activity const& activity)
+			{
+				if (type == discord::ActivityActionType::Join)
+				{
+					DiscordObjectInstance->OnActivityInviteToParty.Broadcast(FString::FromInt((int32)user.GetId()),
+						FString(user.GetUsername()));
+				}
+				else
+				{
+					DiscordObjectInstance->OnActivityInviteToSpectate.Broadcast(FString::FromInt((int32)user.GetId()),
+						FString(user.GetUsername()));
+				}
+			});
+
+			core->ActivityManager().OnActivitySpectate.Connect([](const char* secret)
+			{
+				DiscordObjectInstance->OnActivitySpectate.Broadcast(FString(secret));
+			});
+
+			core->UserManager().OnCurrentUserUpdate.Connect([]()
+			{
+				discord::User* CurrentUser = new discord::User{};
+				discord::Result Result = core->UserManager().GetCurrentUser(CurrentUser);
+				uint8 ResultByte = (uint8)Result;
+				LogDisplay(FString::Printf(TEXT("discord User Result: %s, User: %s"),
+					*GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte)),
+					CurrentUser ? *FString(CurrentUser->GetUsername()) : TEXT("No user")));
+				UE_LOG(LogBlueprintUserMessages, Log, TEXT("discord user %s"), CurrentUser ? *FString(CurrentUser->GetUsername()) : TEXT("No user"));
+				DiscordObjectInstance->OnDiscordUserUpdated.Broadcast(FString::FromInt((int32)CurrentUser->GetId()));
+			});
+		}
 	}
 }
 
@@ -193,6 +239,28 @@ void UDiscordObject::SetJoinSecret(FString InNewJoinSecret)
 				DiscordObjectInstance->OnJoinSecretSet.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
 				LogDisplay(FString::Printf(TEXT("Join secret set. Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
 			});
+	}
+}
+
+void UDiscordObject::SetSpectateSecret(const FString InNewSpectateSecret)
+{
+	activity.GetSecrets().SetSpectate(TCHAR_TO_UTF8(*InNewSpectateSecret));
+	if (core)
+	{
+		core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
+			{
+				uint8 ResultByte = (uint8)result;
+				DiscordObjectInstance->OnSpectateSecretSet.Broadcast(static_cast<EDiscordReturnResult>(ResultByte));
+				LogDisplay(FString::Printf(TEXT("Spectate secret set. Result: %s"), *GetDiscordResultString(static_cast<EDiscordReturnResult>(ResultByte))));
+			});
+	}
+}
+
+void UDiscordObject::SetSteamAppId(const FString IsNewSteamAppId)
+{
+	if (core)
+	{
+		core->ActivityManager().RegisterSteam(FCString::Atoi(*IsNewSteamAppId));
 	}
 }
 
